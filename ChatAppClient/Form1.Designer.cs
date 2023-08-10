@@ -1,6 +1,6 @@
 ﻿namespace ChatAppClient
 {
-    partial class Form1
+    partial class MessagesForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,36 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            textBox1 = new TextBox();
+            SendMessageButton = new Button();
+            EnterMessageBox = new TextBox();
+            label1 = new Label();
             SuspendLayout();
             // 
-            // button1
+            // SendMessageButton
             // 
-            button1.Location = new Point(705, 423);
-            button1.Name = "button1";
-            button1.Size = new Size(100, 27);
-            button1.TabIndex = 0;
-            button1.Text = "send";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            SendMessageButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            SendMessageButton.Location = new Point(706, 655);
+            SendMessageButton.Margin = new Padding(1);
+            SendMessageButton.Name = "SendMessageButton";
+            SendMessageButton.Padding = new Padding(1);
+            SendMessageButton.Size = new Size(98, 35);
+            SendMessageButton.TabIndex = 0;
+            SendMessageButton.Text = "send";
+            SendMessageButton.UseVisualStyleBackColor = true;
+            SendMessageButton.Click += SendMessageButton_Click;
             // 
-            // textBox1
+            // EnterMessageBox
             // 
-            textBox1.Location = new Point(0, 423);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(706, 27);
-            textBox1.TabIndex = 1;
-            textBox1.TextChanged += textBox1_TextChanged;
+            EnterMessageBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            EnterMessageBox.Location = new Point(0, 663);
+            EnterMessageBox.Margin = new Padding(2);
+            EnterMessageBox.Name = "EnterMessageBox";
+            EnterMessageBox.Size = new Size(703, 27);
+            EnterMessageBox.TabIndex = 1;
+            EnterMessageBox.TextChanged += EnterMessageBox_TextChanged;
             // 
-            // Form1
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(351, 260);
+            label1.Name = "label1";
+            label1.Size = new Size(40, 20);
+            label1.TabIndex = 2;
+            label1.Text = "HIIIII";
+            // 
+            // MessagesForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(textBox1);
-            Controls.Add(button1);
-            Name = "Form1";
+            ClientSize = new Size(811, 690);
+            Controls.Add(label1);
+            Controls.Add(EnterMessageBox);
+            Controls.Add(SendMessageButton);
+            Name = "MessagesForm";
             Text = "Form1";
             FormClosing += Form1_Closing;
             ResumeLayout(false);
@@ -66,7 +82,8 @@
 
         #endregion
 
-        private Button button1;
-        private TextBox textBox1;
+        private Button SendMessageButton;
+        private TextBox EnterMessageBox;
+        private Label label1;
     }
 }
