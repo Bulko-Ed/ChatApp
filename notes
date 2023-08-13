@@ -4,8 +4,9 @@ error katekatehello // done
 - multiple clients
 - add necessary controls to both forms
 - align controls in both forms
-- git push
-- multiple messsages
 - add new welcome form with about info and get started
-- add time when message was sent //done
-- add sign up / log in?
+- add time when message was sent //DONE
+- handle when server is unavaliable //DONE
+- not empty name
+- to automatically be in get text control
+- private and public
