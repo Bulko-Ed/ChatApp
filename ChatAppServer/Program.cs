@@ -4,7 +4,6 @@
     using System.Net.Sockets;
     using System.Net; // for ip address.any
     using System.Text;
-    using System.Security.Cryptography.X509Certificates;
 
     class Program
     {
@@ -33,10 +32,11 @@
                     clientname = message;
                     continue;
                 }
-                if (message.Length != 0)
+                if (message.Length != 0) // terrible if condition
                 {
                     Console.WriteLine($"{clientname} says {message}");
                     SendMesssage(client, clientname, message);
+                    clientname = null;
                 }
             }
         }

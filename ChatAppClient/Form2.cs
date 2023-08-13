@@ -24,7 +24,7 @@
                     NameBox.Clear();
                     MessageBox.Show("Invalid name, try again");
                 }
-                
+
             }
         }
 
@@ -40,6 +40,16 @@
             }
         }
         private void NameBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CredentialsForm_Load(object sender, EventArgs e)
         {
 
         }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             NameBox = new TextBox();
+            WelcomeLabel = new Label();
             SuspendLayout();
             // 
             // NameBox
@@ -41,14 +42,27 @@
             NameBox.TextChanged += NameBox_TextChanged;
             NameBox.KeyDown += NameBox_KeyDown;
             // 
+            // WelcomeLabel
+            // 
+            WelcomeLabel.AutoSize = true;
+            WelcomeLabel.Location = new Point(277, 104);
+            WelcomeLabel.Name = "WelcomeLabel";
+            WelcomeLabel.Size = new Size(165, 20);
+            WelcomeLabel.TabIndex = 1;
+            WelcomeLabel.Text = "Welcome to chat room!";
+            WelcomeLabel.Click += label1_Click;
+            // 
             // CredentialsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(800, 450);
+            Controls.Add(WelcomeLabel);
             Controls.Add(NameBox);
             Name = "CredentialsForm";
-            Text = "Form2";
+            Text = "Chat room";
+            Load += CredentialsForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -56,5 +70,6 @@
         #endregion
 
         private TextBox NameBox;
+        private Label WelcomeLabel;
     }
 }
