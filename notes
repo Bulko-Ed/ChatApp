@@ -5,8 +5,8 @@ error katekatehello // done
 - add necessary controls to both forms
 - align controls in both forms
 - add new welcome form with about info and get started
-- add time when message was sent //DONE
 - handle when server is unavaliable //DONE
-- not empty name
 - to automatically be in get text control
 - private and public
+- if enter after port - doesnt work, but after IP - ok
+- unable to connect if invalid credentials

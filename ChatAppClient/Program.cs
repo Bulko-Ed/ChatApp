@@ -1,6 +1,7 @@
 namespace ChatAppClient
 {
     using System;
+    using System.Net.Sockets;
 
     internal static class Program
     {
@@ -13,12 +14,15 @@ namespace ChatAppClient
             //Application.Run(credentialsForm);
 
             string login;
+            TcpClient client;
             if (credentialsForm.ShowDialog() == DialogResult.OK)
             {
                 login = credentialsForm.name;
-                credentialsForm.Close();
-                MessagesForm messagesForm = new MessagesForm(login);
+                client = credentialsForm.client;
+                MessagesForm messagesForm = new MessagesForm(login, client);
+                //credentialsForm.Close();
                 Application.Run(messagesForm);
+                //messagesForm.Show();
             } 
             else
             {

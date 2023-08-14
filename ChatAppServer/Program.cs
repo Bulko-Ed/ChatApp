@@ -21,7 +21,7 @@
         {
             while (true)
             {
-                TcpClient client = listener.AcceptTcpClient(); //will wait until there is an incoming connection request
+                TcpClient client = listener.AcceptTcpClient(); //will wait until there is an incoming connection request (why async task then?)
                 if (client.Connected == true)
                 {
                     SendMesssage(client, Senders.Server, null, ServerMessages.ClientAccepted.ToString());

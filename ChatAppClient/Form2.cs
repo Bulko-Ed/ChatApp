@@ -9,9 +9,9 @@ namespace ChatAppClient
     public partial class CredentialsForm : Form
     {
         public string name;
+        public TcpClient client;
         public IPAddress IP;
-        public string _IP;
-        public int port;
+        public int port = -1;
         public CredentialsForm()
         {
             InitializeComponent();
@@ -22,7 +22,6 @@ namespace ChatAppClient
         {
             if (e.KeyCode == Keys.Enter)
             {
-
                 bool valid_name = ValidateName(NameBox.Text);
                 if (valid_name)
                 {
@@ -34,60 +33,58 @@ namespace ChatAppClient
                     NameBox.Clear();
                     MessageBox.Show("Invalid name, try again");
                 }
-
             }
         }
-
         private bool ValidateName(string name)
         {
-            if (name == null || name == "invalid name")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return (name != null && name != "invalid name");
         }
-
         private void IPBox_KeyDown(Object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter && IPBox.Text != "")
+            if (e.KeyCode == Keys.Enter)
             {
-                _IP = IPBox.Text;
-                try
-                {
-                    IP = IPAddress.Parse(_IP);
-                    if (port != null)
-                    {
-                        TryConnect(IP, port);
-                    }
-                }
-                catch (FormatException)
-                {
-                    MessageBox.Show("Invalid IP, try again.");
-                }
-
-
+                if (!ValidIP()) { return; }
+                if (ValidPort()) { TryConnect(IP, port); }
             }
         }
         private void PortBox_KeyDown(Object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter && PortBox.Text != "")
+            if (e.KeyCode == Keys.Enter)
             {
-                string _port = PortBox.Text;
-                try
-                {
-                    port = int.Parse(_port);
+                if (!ValidPort()) { return; }
+                if (ValidIP()) { TryConnect(IP, port); }
+            }
+        }
+        private bool ValidIP()
+        {   
+            string _IP = IPBox.Text;    
+            if (string.IsNullOrEmpty(_IP)) { return false; }
+            try
+            {
+                IP = IPAddress.Parse(_IP); 
+                return true;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid IP, try again.");
+                return false;
+            }
+        }
 
-                    if (IP != null) { TryConnect(IP, port); }
-                }
-                catch (FormatException)
-                {
-                    MessageBox.Show("Invalid port, try again.");
-                }
+        private bool ValidPort()
+        {
+            string _port = PortBox.Text;
+            if (string.IsNullOrEmpty(_port)) {  return false; }
+            try
+            {
+                port = int.Parse(_port);
+                return true; // дойдет ли досюда если порт инвэлид 
 
-
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid port, try again.");
+                return false;
             }
         }
         private void TryConnect(IPAddress IP, int port)
@@ -109,6 +106,7 @@ namespace ChatAppClient
                     IPBox.Clear();
                     PortBox.Clear();
                     NameBox.Show();
+                    this.client = client;
                 }
                 else
                 {
