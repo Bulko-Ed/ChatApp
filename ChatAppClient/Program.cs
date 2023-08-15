@@ -11,10 +11,9 @@ namespace ChatAppClient
         {
             ApplicationConfiguration.Initialize();
             CredentialsForm credentialsForm = new CredentialsForm();
-            //Application.Run(credentialsForm);
-
             string login;
             TcpClient client;
+
             if (credentialsForm.ShowDialog() == DialogResult.OK)
             {
                 login = credentialsForm.name;
@@ -22,7 +21,6 @@ namespace ChatAppClient
                 MessagesForm messagesForm = new MessagesForm(login, client);
                 //credentialsForm.Close();
                 Application.Run(messagesForm);
-                //messagesForm.Show();
             } 
             else
             {

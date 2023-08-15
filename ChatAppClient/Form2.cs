@@ -56,12 +56,12 @@ namespace ChatAppClient
             }
         }
         private bool ValidIP()
-        {   
-            string _IP = IPBox.Text;    
+        {
+            string _IP = IPBox.Text;
             if (string.IsNullOrEmpty(_IP)) { return false; }
             try
             {
-                IP = IPAddress.Parse(_IP); 
+                IP = IPAddress.Parse(_IP);
                 return true;
             }
             catch (FormatException)
@@ -74,7 +74,7 @@ namespace ChatAppClient
         private bool ValidPort()
         {
             string _port = PortBox.Text;
-            if (string.IsNullOrEmpty(_port)) {  return false; }
+            if (string.IsNullOrEmpty(_port)) { return false; }
             try
             {
                 port = int.Parse(_port);
@@ -96,16 +96,38 @@ namespace ChatAppClient
                 Stream stream = client.GetStream();
                 var _buffer = new byte[1024];
                 var bytesRead = stream.Read(_buffer, 0, _buffer.Length);
-                string sender = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
-                _buffer = new byte[1024];
-                bytesRead = stream.Read(_buffer, 0, _buffer.Length);
                 string message = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
-                if (sender == "Server" && message == "ClientAccepted")
+
+                bool sender_part = true;
+                string sender = null;
+                string serverMessage = null;
+                foreach (char c in message)
+                {
+                    if (c == '\n')
+                    {
+                        sender_part = false;
+                    }
+                    else if (sender_part)
+                    {
+                        sender += c;
+                    }
+                    else
+                    {
+                        serverMessage += c;
+                    }
+                }
+                if (sender == "Server" && serverMessage == "ClientAccepted")
                 {
                     MessageBox.Show("connection successful");
                     IPBox.Clear();
                     PortBox.Clear();
+                    IPlabel.Hide();
+                    PortNumberLabel.Hide();
+                    IPBox.Hide();
+                    PortBox.Hide();
+                    enterIPlabel.Hide();
                     NameBox.Show();
+
                     this.client = client;
                 }
                 else
@@ -142,6 +164,40 @@ namespace ChatAppClient
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IPBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void NameBox_Enter(object sender, EventArgs e)
+        {
+            NameBox.Text = string.Empty;
+        }
+
+        private void CredentialsForm_Resize(object sender, EventArgs e)
+        {
+            float font_size_1 = Height / 30;
+            float font_size_2 = Height / 50;
+            float font_size_3 = Height / 60;
+
+            //font_size = Math.Max(font_size, 10);
+            WelcomeLabel.Font = new Font(WelcomeLabel.Font.FontFamily, font_size_1);
+            enterIPlabel.Font = new Font(Font.FontFamily, font_size_2);
+            PortNumberLabel.Font = new Font(Font.FontFamily, font_size_3);
+            IPlabel.Font = new Font(Font.FontFamily, font_size_3);
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PortBox_TextChanged(object sender, EventArgs e)
         {
 
         }

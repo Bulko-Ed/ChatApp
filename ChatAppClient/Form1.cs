@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Net;
+using System.Configuration;
 
 namespace ChatAppClient
 {
@@ -15,11 +16,13 @@ namespace ChatAppClient
             InitializeComponent();
             this.client_name = client_name;
             this.client = client;
+            //EnterMessageBox.Focus();
             stream = client.GetStream();
             Task task = ListenToServer();
+
             //Task.Run(() => { ListenToServer(); });
         }
-        
+
 
         private void SendMessageButton_Click(object sender, EventArgs e)
         {
@@ -47,63 +50,95 @@ namespace ChatAppClient
 
         private async Task ListenToServer()
         {
-            string who = null;
-            string clientname = null;
+            //string what = null;
+            string sender = null;
+            string sendername = null;
+            string message = null;
+            bool senderPart = true;
+            bool senderNamePart = true;
             while (true)
             {
                 try
                 {
                     var _buffer = new byte[1024];
                     var bytesRead = await stream.ReadAsync(_buffer, 0, _buffer.Length);
-                    var message = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
-                    if (who == null)
+                    var data = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
+                    foreach (char c in data)
                     {
-                        who = message;
-                        continue;
-                    }
-                    else if (who == "Client" && clientname == null)
-                    {
-                        clientname = message;
-                        continue;
-                    }
-                    else if (who == "Client")
-                    {
-                        //to show clientname in bold font and time the message was sent
-                        int start = rtb.TextLength;
-                        rtb.Invoke(() =>
+                        if (c == '\n' && senderPart)
                         {
-                            rtb.AppendText($"{clientname}");
-                            rtb.Select(start, clientname.Length);
-                            rtb.SelectionFont = new Font(rtb.Font, FontStyle.Bold);
-                            rtb.Select(rtb.TextLength, 0); // to move insertion point to the end, because selectionfont starts with it
-                            rtb.SelectionFont = new Font(rtb.Font, FontStyle.Regular);
+                            senderPart = false;
+                            if (sender == "Server")
+                            {
+                                ProcessServerMessage(message[8..]);
+                                sender = null;
+                                message = null;
+                                senderPart = true;
 
-                        });
+                                continue;
+                            }
+                            senderNamePart = true;
 
-                        string t = DateTime.Now.ToString("HH:mm:ss");
-                        rtb.Invoke(() =>
+                        }
+                        else if (c == '\n' && senderNamePart)
                         {
-                            rtb.AppendText($" at {t} \n");
-                            rtb.AppendText($"{message} \n"); // TODO if string is bigger that window size, allow breaks in a message? 
-                            rtb.AppendText($"{new string('-', 50)} \n"); // TODO set string to match window size
-                        });
+                            senderNamePart = false;
+                        }
+                        else if (senderPart)
+                        {
+                            sender += c;
+                        }
+                        else if (senderNamePart)
+                        {
+                            sendername += c;
+                        }
+                        else
+                        {
+                            message += c;
+                        }
+                    }
+                    senderPart = true;
+                    senderNamePart = false;
 
-                        // to display the most recent messages
-                        rtb.SelectionStart = rtb.TextLength;
-                        rtb.Invoke(() => rtb.ScrollToCaret());
-                        clientname = null;
-                    }
-                    else if (who == "Server" && message != null)
+
+
+                    //to show clientname in bold font and time the message was sent
+                    int start = rtb.TextLength;
+                    rtb.Invoke(() =>
                     {
-                        who = null; 
-                        message = null;
-                    }
+                        rtb.AppendText($"{sendername}");
+                        rtb.Select(start, sendername.Length);
+                        rtb.SelectionFont = new Font(rtb.Font, FontStyle.Bold);
+                        rtb.Select(rtb.TextLength, 0); // to move insertion point to the end, because selectionfont starts with it
+                        rtb.SelectionFont = new Font(rtb.Font, FontStyle.Regular);
+
+                    });
+
+                    string t = DateTime.Now.ToString("HH:mm:ss");
+                    rtb.Invoke(() =>
+                    {
+                        rtb.AppendText($" at {t} \n");
+                        rtb.AppendText($"{message} \n"); // TODO if string is bigger that window size, allow breaks in a message? 
+                        rtb.AppendText($"{new string('-', 70)} \n"); // TODO set string to match window size
+                    });
+
+                    // to display the most recent messages
+                    rtb.SelectionStart = rtb.TextLength;
+                    rtb.Invoke(() => rtb.ScrollToCaret());
+                    message = null;
+                    sendername = null;
+
+
                 }
                 catch
                 {
                     client.Close();
                 }
             }
+        }
+        private void ProcessServerMessage(string message)
+        {
+            return;
         }
 
         private void EnterMessageBox_TextChanged(object sender, EventArgs e)
@@ -122,6 +157,11 @@ namespace ChatAppClient
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MessagesForm_Resize(object sender, EventArgs e)
         {
 
         }

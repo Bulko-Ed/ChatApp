@@ -3,10 +3,10 @@ error katekatehello // done
 08.13 TODO
 - multiple clients
 - add necessary controls to both forms
-- align controls in both forms
-- add new welcome form with about info and get started
-- handle when server is unavaliable //DONE
 - to automatically be in get text control
 - private and public
 - if enter after port - doesnt work, but after IP - ok
 - unable to connect if invalid credentials
+
+08.14
+- sends enter before every message starting with the second message

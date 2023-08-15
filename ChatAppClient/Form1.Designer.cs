@@ -28,77 +28,118 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SendMessageButton = new Button();
             EnterMessageBox = new TextBox();
-            label1 = new Label();
             rtb = new RichTextBox();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            SendMessageButton = new Button();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // EnterMessageBox
+            // 
+            tableLayoutPanel1.SetColumnSpan(EnterMessageBox, 9);
+            EnterMessageBox.Dock = DockStyle.Fill;
+            EnterMessageBox.Location = new Point(2, 560);
+            EnterMessageBox.Margin = new Padding(2);
+            EnterMessageBox.Multiline = true;
+            EnterMessageBox.Name = "EnterMessageBox";
+            tableLayoutPanel1.SetRowSpan(EnterMessageBox, 2);
+            EnterMessageBox.Size = new Size(761, 73);
+            EnterMessageBox.TabIndex = 1;
+            EnterMessageBox.TextChanged += EnterMessageBox_TextChanged;
+            EnterMessageBox.KeyDown += EnterMessageBox_KeyDown;
+            // 
+            // rtb
+            // 
+            tableLayoutPanel1.SetColumnSpan(rtb, 10);
+            rtb.Dock = DockStyle.Fill;
+            rtb.Location = new Point(3, 3);
+            rtb.Name = "rtb";
+            rtb.ReadOnly = true;
+            tableLayoutPanel1.SetRowSpan(rtb, 18);
+            rtb.Size = new Size(852, 552);
+            rtb.TabIndex = 3;
+            rtb.Text = "";
+            rtb.TextChanged += richTextBox1_TextChanged;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 10;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.Controls.Add(rtb, 0, 0);
+            tableLayoutPanel1.Controls.Add(EnterMessageBox, 5, 17);
+            tableLayoutPanel1.Controls.Add(SendMessageButton, 9, 18);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 20;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(858, 635);
+            tableLayoutPanel1.TabIndex = 4;
             // 
             // SendMessageButton
             // 
-            SendMessageButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SendMessageButton.Location = new Point(706, 655);
+            SendMessageButton.Dock = DockStyle.Fill;
+            SendMessageButton.Location = new Point(766, 559);
             SendMessageButton.Margin = new Padding(1);
             SendMessageButton.Name = "SendMessageButton";
             SendMessageButton.Padding = new Padding(1);
-            SendMessageButton.Size = new Size(98, 35);
+            tableLayoutPanel1.SetRowSpan(SendMessageButton, 2);
+            SendMessageButton.Size = new Size(91, 75);
             SendMessageButton.TabIndex = 0;
             SendMessageButton.Text = "send";
             SendMessageButton.UseVisualStyleBackColor = true;
             SendMessageButton.Click += SendMessageButton_Click;
             // 
-            // EnterMessageBox
-            // 
-            EnterMessageBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            EnterMessageBox.Location = new Point(0, 663);
-            EnterMessageBox.Margin = new Padding(2);
-            EnterMessageBox.Name = "EnterMessageBox";
-            EnterMessageBox.Size = new Size(703, 27);
-            EnterMessageBox.TabIndex = 1;
-            EnterMessageBox.TextChanged += EnterMessageBox_TextChanged;
-            EnterMessageBox.KeyDown += EnterMessageBox_KeyDown;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(351, 260);
-            label1.Name = "label1";
-            label1.Size = new Size(40, 20);
-            label1.TabIndex = 2;
-            label1.Text = "HIIIII";
-            label1.Click += label1_Click;
-            // 
-            // rtb
-            // 
-            rtb.Location = new Point(0, 2);
-            rtb.Name = "rtb";
-            rtb.ReadOnly = true;
-            rtb.Size = new Size(804, 649);
-            rtb.TabIndex = 3;
-            rtb.Text = "";
-            rtb.TextChanged += richTextBox1_TextChanged;
-            // 
             // MessagesForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(811, 690);
-            Controls.Add(rtb);
-            Controls.Add(label1);
-            Controls.Add(EnterMessageBox);
-            Controls.Add(SendMessageButton);
+            ClientSize = new Size(858, 635);
+            Controls.Add(tableLayoutPanel1);
             Name = "MessagesForm";
-            Text = "Form1";
+            Text = "Chat application";
             FormClosing += Form1_Closing;
+            Resize += MessagesForm_Resize;
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Button SendMessageButton;
         private TextBox EnterMessageBox;
-        private Label label1;
         private RichTextBox rtb;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button SendMessageButton;
     }
 }
