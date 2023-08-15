@@ -98,26 +98,7 @@ namespace ChatAppClient
                 var bytesRead = stream.Read(_buffer, 0, _buffer.Length);
                 string message = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
 
-                bool sender_part = true;
-                string sender = null;
-                string serverMessage = null;
-                foreach (char c in message)
-                {
-                    if (c == '\n')
-                    {
-                        sender_part = false;
-                    }
-                    else if (sender_part)
-                    {
-                        sender += c;
-                    }
-                    else
-                    {
-                        serverMessage += c;
-                    }
-                }
-                if (sender == "Server" && serverMessage == "ClientAccepted")
-                {
+                if (message[..6] == "Server" && message[6..] == "ClientAccepted") {
                     MessageBox.Show("connection successful");
                     IPBox.Clear();
                     PortBox.Clear();
@@ -127,15 +108,12 @@ namespace ChatAppClient
                     PortBox.Hide();
                     enterIPlabel.Hide();
                     NameBox.Show();
-
                     this.client = client;
                 }
                 else
                 {
                     MessageBox.Show("Try again.");
-
                 }
-
             }
 
             catch (SocketException)
@@ -144,35 +122,15 @@ namespace ChatAppClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show("oops");
+                MessageBox.Show("oops, something went wrong");
             }
 
         }
-        private void NameBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CredentialsForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void IPBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        private void NameBox_TextChanged(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void CredentialsForm_Load(object sender, EventArgs e) { }
+        private void label2_Click(object sender, EventArgs e) { }
+        private void IPBox_TextChanged(object sender, EventArgs e) { }
         private void NameBox_Enter(object sender, EventArgs e)
         {
             NameBox.Text = string.Empty;
@@ -191,15 +149,8 @@ namespace ChatAppClient
             IPlabel.Font = new Font(Font.FontFamily, font_size_3);
 
         }
+        private void label1_Click_1(object sender, EventArgs e) { }
 
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PortBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void PortBox_TextChanged(object sender, EventArgs e) { }
     }
 }
