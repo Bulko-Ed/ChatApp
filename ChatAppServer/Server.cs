@@ -113,7 +113,7 @@
                 client_names.Remove(name);
                 foreach (TcpClient cl in clients)
                 {
-                    SendAsServer(cl, "Server" + "Left" + name);
+                    SendAsServer(cl, "Left" + name);
                 }
                 clients.Remove(client);
             }
@@ -122,7 +122,7 @@
                 client_names.Add(name);
                 foreach (TcpClient cl in clients)
                 {
-                    SendAsServer(cl, "Server" + "Join" + name);
+                    SendAsServer(cl, "Join" + name);
                 }
             }
         }

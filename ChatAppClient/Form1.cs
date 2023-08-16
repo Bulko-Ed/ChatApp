@@ -16,8 +16,7 @@ namespace ChatAppClient
             this.client = client;
             stream = client.GetStream();
             Task task = ListenToServer();
-            Program.Send(client, "ToServer", client_name, "NameInfo");
-            Program.Send(client, "ToServer", client_name, "Joined");
+            Program.Send(client, "ToServer", client_name, "Join");
         }
 
 
