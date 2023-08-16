@@ -35,7 +35,7 @@
                 if (client.Connected == true)
                 {
                     string taken_names = string.Join('\n', client_names);
-                    SendMessageAsServer(client, "ClientAccepted" + taken_names);
+                    SendAsServer(client, "ClientAccepted" + taken_names);
                     Thread thread = new Thread(new ParameterizedThreadStart(ListenToClient));
                     thread.Start(client);
                     clients.Add(client);
@@ -57,11 +57,11 @@
                 if (message == "") { break; } // client has just disconnected
                 if (message[..8] == "ToServer")
                 {
-                    ProcessMessageToServer(client, message[8..]);
+                    ProcessMessage(client, message[8..]);
                 }
                 else if (message[..9] == "ToClients") //"ToClients" + client_name + "\n" + EnterMessageBox.Text;
                 {
-                    SendMessageToClients(message[9..]);
+                    SendToClients(message[9..]);
                     Console.WriteLine($"{message[9..]}");
                     Console.WriteLine(new string('-', 50));
                 }
@@ -69,7 +69,7 @@
             }
         }
 
-        static void SendMessageToClients(string _message) // _message = client_name + "\n" + EnterMessageBox.Text
+        static void SendToClients(string _message) // _message = client_name + "\n" + EnterMessageBox.Text
         {
 
             foreach (TcpClient client in clients)
@@ -80,13 +80,13 @@
                 ns.Write(buffer, 0, buffer.Length);
             }
         }
-        static void SendMessageAsServer(TcpClient client, string _message)
+        static void SendAsServer(TcpClient client, string _message)
         {
             string message = "Server" + _message;
             Send(client, message);
         }
 
-        static void ProcessMessageToServer(TcpClient client, string _message) //client_name + "\n" + "Closing"
+        static void ProcessMessage(TcpClient client, string _message) //client_name + "\n" + "Closing"
         {
             bool isName = true;
             string name = null;
@@ -107,14 +107,23 @@
                     message += c;
                 }
             } 
+
             if (message == "Closing")
             {
-                clients.Remove(client);
                 client_names.Remove(name);
+                foreach (TcpClient cl in clients)
+                {
+                    SendAsServer(cl, "Server" + "Left" + name);
+                }
+                clients.Remove(client);
             }
-            else if (message == "NameInfo")
+            else if (message == "Join")
             {
                 client_names.Add(name);
+                foreach (TcpClient cl in clients)
+                {
+                    SendAsServer(cl, "Server" + "Join" + name);
+                }
             }
         }
 
@@ -130,7 +139,7 @@
         {
             foreach (var client in clients)
             {
-                SendMessageAsServer(client, "ShuttingDown");
+                SendAsServer(client, "ShuttingDown");
                 //todo : close the progra,
             }
             Environment.Exit(0);

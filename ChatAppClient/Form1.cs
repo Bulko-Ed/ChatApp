@@ -17,7 +17,7 @@ namespace ChatAppClient
             stream = client.GetStream();
             Task task = ListenToServer();
             Program.Send(client, "ToServer", client_name, "NameInfo");
-            JoinLeftMessage("joined");
+            Program.Send(client, "ToServer", client_name, "Joined");
         }
 
 
@@ -37,8 +37,8 @@ namespace ChatAppClient
             if (client.Connected)
             {
                 Program.Send(client, "ToServer", client_name, "Closing");
-                JoinLeftMessage("left");
                 client.Close();
+                Application.Exit();
             }
         }
 
@@ -107,9 +107,9 @@ namespace ChatAppClient
             string t = DateTime.Now.ToString("HH:mm:ss");
             rtb.Invoke(() => { rtb.AppendText($" at {t} \n"); });
         }
-        private void JoinLeftMessage(string joinleft)
+        private void JoinLeftMessage(string joinleft, string name)
         {
-            ShowName(client_name);
+            ShowName(name);
             rtb.Invoke(() => { rtb.AppendText($" has {joinleft} a chat\n"); });
             rtb.AppendText($"{new string('-', 70)} \n");
         }
@@ -137,8 +137,15 @@ namespace ChatAppClient
             {
                 MessageBox.Show("server is closing, you will be disconnected");
                 Close();
-                Application.Exit();
                 
+            }
+            else if (message[..4] == "Join")
+            {
+                JoinLeftMessage("joined", message[4..]);
+            }
+            else if (message[..4] == "Left")
+            {
+                JoinLeftMessage("left", message[4..]);
             }
         }
 
