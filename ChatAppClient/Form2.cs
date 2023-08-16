@@ -98,7 +98,8 @@ namespace ChatAppClient
                 var bytesRead = stream.Read(_buffer, 0, _buffer.Length);
                 string message = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
 
-                if (message[..6] == "Server" && message[6..] == "ClientAccepted") {
+                if (message[..6] == "Server" && message[6..] == "ClientAccepted")
+                {
                     MessageBox.Show("connection successful");
                     IPBox.Clear();
                     PortBox.Clear();

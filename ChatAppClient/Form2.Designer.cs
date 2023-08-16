@@ -42,9 +42,9 @@
             // NameBox
             // 
             tableLayoutPanel1.SetColumnSpan(NameBox, 3);
-            NameBox.Location = new Point(264, 395);
+            NameBox.Location = new Point(351, 227);
             NameBox.Name = "NameBox";
-            NameBox.Size = new Size(255, 27);
+            NameBox.Size = new Size(173, 27);
             NameBox.TabIndex = 0;
             NameBox.Text = "Enter your name";
             NameBox.TextChanged += NameBox_TextChanged;
@@ -69,7 +69,7 @@
             enterIPlabel.AutoSize = true;
             tableLayoutPanel1.SetColumnSpan(enterIPlabel, 5);
             enterIPlabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            enterIPlabel.Location = new Point(264, 224);
+            enterIPlabel.Location = new Point(264, 280);
             enterIPlabel.Name = "enterIPlabel";
             enterIPlabel.Size = new Size(371, 28);
             enterIPlabel.TabIndex = 2;
@@ -79,7 +79,7 @@
             // IPlabel
             // 
             IPlabel.AutoSize = true;
-            IPlabel.Location = new Point(264, 280);
+            IPlabel.Location = new Point(264, 336);
             IPlabel.Name = "IPlabel";
             IPlabel.Size = new Size(76, 20);
             IPlabel.TabIndex = 3;
@@ -89,7 +89,7 @@
             // PortNumberLabel
             // 
             PortNumberLabel.AutoSize = true;
-            PortNumberLabel.Location = new Point(264, 336);
+            PortNumberLabel.Location = new Point(264, 392);
             PortNumberLabel.Name = "PortNumberLabel";
             PortNumberLabel.Size = new Size(60, 40);
             PortNumberLabel.TabIndex = 4;
@@ -98,7 +98,7 @@
             // IPBox
             // 
             tableLayoutPanel1.SetColumnSpan(IPBox, 2);
-            IPBox.Location = new Point(351, 283);
+            IPBox.Location = new Point(351, 339);
             IPBox.Name = "IPBox";
             IPBox.Size = new Size(158, 27);
             IPBox.TabIndex = 5;
@@ -108,7 +108,7 @@
             // PortBox
             // 
             tableLayoutPanel1.SetColumnSpan(PortBox, 2);
-            PortBox.Location = new Point(351, 339);
+            PortBox.Location = new Point(351, 395);
             PortBox.Name = "PortBox";
             PortBox.Size = new Size(161, 27);
             PortBox.TabIndex = 6;
@@ -129,12 +129,12 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel1.Controls.Add(WelcomeLabel, 3, 2);
-            tableLayoutPanel1.Controls.Add(IPlabel, 3, 5);
-            tableLayoutPanel1.Controls.Add(PortNumberLabel, 3, 6);
-            tableLayoutPanel1.Controls.Add(IPBox, 4, 5);
-            tableLayoutPanel1.Controls.Add(PortBox, 4, 6);
-            tableLayoutPanel1.Controls.Add(enterIPlabel, 3, 4);
-            tableLayoutPanel1.Controls.Add(NameBox, 3, 7);
+            tableLayoutPanel1.Controls.Add(PortNumberLabel, 3, 7);
+            tableLayoutPanel1.Controls.Add(PortBox, 4, 7);
+            tableLayoutPanel1.Controls.Add(IPlabel, 3, 6);
+            tableLayoutPanel1.Controls.Add(IPBox, 4, 6);
+            tableLayoutPanel1.Controls.Add(enterIPlabel, 3, 5);
+            tableLayoutPanel1.Controls.Add(NameBox, 4, 4);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";

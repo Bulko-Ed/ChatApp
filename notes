@@ -1,11 +1,9 @@
 error katekatehello // done
 
 08.13 TODO
-- multiple clients
 - add necessary controls to both forms
 - to automatically be in get text control
 - private and public
-- if enter after port - doesnt work, but after IP - ok
 - unable to connect if invalid credentials
 
 08.14
@@ -16,7 +14,8 @@ error katekatehello // done
 - static vs non-static
 
 09.15
-- allow to send enter in messages
 - unique client names
 - smooth closing and disconnecting
-- move enter your name widget
+- try breaking app in different ways
+- to allow run client and server from command line
+- add picture near the welcome label

@@ -47,7 +47,6 @@
             EnterMessageBox.Size = new Size(761, 73);
             EnterMessageBox.TabIndex = 1;
             EnterMessageBox.TextChanged += EnterMessageBox_TextChanged;
-            EnterMessageBox.KeyDown += EnterMessageBox_KeyDown;
             // 
             // rtb
             // 

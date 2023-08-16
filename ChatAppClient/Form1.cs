@@ -1,7 +1,5 @@
 using System.Net.Sockets;
 using System.Text;
-using System.Net;
-using System.Configuration;
 
 namespace ChatAppClient
 {
@@ -16,7 +14,6 @@ namespace ChatAppClient
             InitializeComponent();
             this.client_name = client_name;
             this.client = client;
-            //EnterMessageBox.Focus();
             stream = client.GetStream();
             Task task = ListenToServer();
 
@@ -41,6 +38,7 @@ namespace ChatAppClient
             client.Close(); // TODO notify server
         }
 
+        /*
         private void EnterMessageBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -48,6 +46,7 @@ namespace ChatAppClient
                 SendMessageButton_Click(sender, e);
             }
         }
+        */
 
 
         private async Task ListenToServer()
@@ -64,7 +63,7 @@ namespace ChatAppClient
                     var bytesRead = await stream.ReadAsync(_buffer, 0, _buffer.Length);
                     var data = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
                     // data = Server\nServerMessage or Client\nClientName\nClientMessage
-                    
+
                     if (data[..6] == "Server")
                     {
                         ProcessServerMessage(data[6..]);
