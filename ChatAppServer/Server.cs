@@ -11,6 +11,7 @@
         static void Main(string[] args)
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 5000);
+            Console.WriteLine(IPAddress.Any.ToString());
             listener.Start();
             Task task = AcceptNewClients(listener);
             Console.WriteLine("Press q to close the server");

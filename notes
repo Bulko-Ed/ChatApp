@@ -14,3 +14,9 @@ error katekatehello // done
 08.15
 - i have problems with deleting clients and etc
 - static vs non-static
+
+09.15
+- allow to send enter in messages
+- unique client names
+- smooth closing and disconnecting
+- move enter your name widget
