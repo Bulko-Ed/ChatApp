@@ -16,6 +16,7 @@
             listener.Start();
             Task task = AcceptNewClients(listener);
             Console.WriteLine("Press q to close the server");
+            Console.WriteLine($"{new string('-', 70)} \n");
 
             while (true)
             {
@@ -51,33 +52,39 @@
             var buffer = new byte[1024];
 
             while (true)
-            {
-                var bytesRead = stream.Read(buffer, 0, buffer.Length);
-                var message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                if (message == "") { break; } // client has just disconnected
-                if (message[..8] == "ToServer")
+            {   
+                try
                 {
-                    ProcessMessage(client, message[8..]);
+                    var bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    var message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    if (message == "") { break; } // client has just disconnected
+                    if (message[..8] == "ToServer")
+                    {
+                        ProcessMessage(client, message[8..]);
+                    }
+                    else if (message[..9] == "ToClients") //"ToClients" + client_name + "\n" + EnterMessageBox.Text;
+                    {
+                        SendToClients(message[9..]);
+                        Console.WriteLine($"{message[9..]}");
+                        Console.WriteLine(new string('-', 50));
+                    }
                 }
-                else if (message[..9] == "ToClients") //"ToClients" + client_name + "\n" + EnterMessageBox.Text;
+                catch (IOException) // client has disconnected in the very first form
                 {
-                    SendToClients(message[9..]);
-                    Console.WriteLine($"{message[9..]}");
-                    Console.WriteLine(new string('-', 50));
+                    clients.Remove(client);
+                    break;
                 }
+                
 
             }
         }
 
         static void SendToClients(string _message) // _message = client_name + "\n" + EnterMessageBox.Text
         {
-
             foreach (TcpClient client in clients)
             {
                 string message = "Client" + "\n" + _message;
-                NetworkStream ns = client.GetStream();
-                var buffer = Encoding.ASCII.GetBytes(message);
-                ns.Write(buffer, 0, buffer.Length);
+                Send(client, message);
             }
         }
         static void SendAsServer(TcpClient client, string _message)
@@ -126,9 +133,7 @@
                 }
             }
         }
-
-
-        static void Send(TcpClient client, string m) // what can be Sender, SenderName and Message
+        static void Send(TcpClient client, string m) 
         {
             NetworkStream stream = client.GetStream();
             var buffer = Encoding.ASCII.GetBytes(m);
@@ -143,17 +148,6 @@
                 //todo : close the progra,
             }
             Environment.Exit(0);
-        }
-        enum ServerMessages
-        {
-            ShuttingDown,
-            ClientAccepted
-        }
-
-        enum Senders
-        {
-            Client, 
-            Server
         }
     }
 }

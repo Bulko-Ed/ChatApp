@@ -37,8 +37,10 @@ namespace ChatAppClient
             {
                 Program.Send(client, "ToServer", client_name, "Closing");
                 client.Close();
-                Application.Exit();
+                
             }
+            Application.Exit();
+            Environment.Exit(0);
         }
 
         private async Task ListenToServer()
@@ -135,6 +137,7 @@ namespace ChatAppClient
             if (message == "ShuttingDown")
             {
                 MessageBox.Show("server is closing, you will be disconnected");
+                client.Close();
                 Close();
                 
             }

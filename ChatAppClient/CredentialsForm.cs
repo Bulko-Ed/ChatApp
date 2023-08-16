@@ -1,18 +1,18 @@
 ﻿using System.IO;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
+using System.Net; // for IP address
+using System.Net.Sockets; // for TcpClient
+using System.Text; // for Encoding
 
 
 namespace ChatAppClient
 {
     public partial class CredentialsForm : Form
     {
-        public string name;
+        public string name = null;
         public TcpClient client;
-        public IPAddress IP;
-        public int port = -1;
-        public string taken_names = null;
+        private IPAddress IP;
+        private int port = -1;
+        private string taken_names = null;
         public CredentialsForm()
         {
             InitializeComponent();
@@ -23,39 +23,27 @@ namespace ChatAppClient
         {
             if (e.KeyCode == Keys.Enter)
             {
-                bool valid_name = ValidateName(NameBox.Text);
-                if (valid_name)
+                if (NameBox.Text == "")
                 {
-                    this.name = NameBox.Text;
-                    this.DialogResult = DialogResult.OK;
+                    MessageBox.Show("Your name must contain at least one character.");
+                    return;
                 }
                 else
                 {
-
-                    if (NameBox.Text == null)
+                    if (!taken_names.Contains(NameBox.Text))
                     {
-                        MessageBox.Show("Your name must contain at least one character");
+                        name = NameBox.Text;
+                        DialogResult = DialogResult.OK;
                     }
                     else
                     {
-                        MessageBox.Show("This name is taken, try again");
+                        MessageBox.Show("This name is already taken, try again.");
+                        NameBox.Clear();
                     }
-                    NameBox.Clear();
                 }
             }
         }
-        private bool ValidateName(string name)
-        {
 
-            if (name != null && name != "invalid name")
-            {
-                if (!taken_names.Contains(name))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
         private void IPBox_KeyDown(Object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -95,7 +83,7 @@ namespace ChatAppClient
             try
             {
                 port = int.Parse(_port);
-                return true; // дойдет ли досюда если порт инвэлид 
+                return true;
 
             }
             catch (FormatException)
@@ -108,30 +96,23 @@ namespace ChatAppClient
         {
             try
             {
-                TcpClient client = new TcpClient();
+                client = new TcpClient();
                 client.Connect(IP, port);
-                Stream stream = client.GetStream();
-                var _buffer = new byte[1024];
-                var bytesRead = stream.Read(_buffer, 0, _buffer.Length);
-                string message = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
 
-                if (message[..6] == "Server" && message[6..20] == "ClientAccepted")
-                {
-                    taken_names = message[20..];
-                    MessageBox.Show("connection successful");
-                    IPBox.Clear();
-                    PortBox.Clear();
+                if (ConnectionConfirmed())
+                { 
                     IPlabel.Hide();
                     PortNumberLabel.Hide();
                     IPBox.Hide();
                     PortBox.Hide();
                     enterIPlabel.Hide();
                     NameBox.Show();
-                    this.client = client;
                 }
                 else
                 {
                     MessageBox.Show("Try again.");
+                    IP = null;
+                    port = -1;
                 }
             }
 
@@ -145,14 +126,19 @@ namespace ChatAppClient
             }
 
         }
-        private void NameBox_TextChanged(object sender, EventArgs e) { }
-        private void label1_Click(object sender, EventArgs e) { }
-        private void CredentialsForm_Load(object sender, EventArgs e) { }
-        private void label2_Click(object sender, EventArgs e) { }
-        private void IPBox_TextChanged(object sender, EventArgs e) { }
-        private void NameBox_Enter(object sender, EventArgs e)
+        private bool ConnectionConfirmed()
         {
-            NameBox.Text = string.Empty;
+            var buffer = new byte[1024];
+            var bytesRead = client.GetStream().Read(buffer, 0, buffer.Length);
+            string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+
+            if (message[..6] == "Server" && message[6..20] == "ClientAccepted")
+            {
+                taken_names = message[20..];
+                MessageBox.Show("connection successful");
+                return true;
+            }
+            return false;
         }
 
         private void CredentialsForm_Resize(object sender, EventArgs e)
@@ -161,15 +147,23 @@ namespace ChatAppClient
             float font_size_2 = Height / 50;
             float font_size_3 = Height / 60;
 
-            //font_size = Math.Max(font_size, 10);
             WelcomeLabel.Font = new Font(WelcomeLabel.Font.FontFamily, font_size_1);
             enterIPlabel.Font = new Font(Font.FontFamily, font_size_2);
             PortNumberLabel.Font = new Font(Font.FontFamily, font_size_3);
             IPlabel.Font = new Font(Font.FontFamily, font_size_3);
 
         }
-        private void label1_Click_1(object sender, EventArgs e) { }
+        private void NameBox_Enter(object sender, EventArgs e)
+        {
+            NameBox.Text = string.Empty;
+        }
 
+        private void label1_Click_1(object sender, EventArgs e) { }
         private void PortBox_TextChanged(object sender, EventArgs e) { }
+        private void NameBox_TextChanged(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void CredentialsForm_Load(object sender, EventArgs e) { }
+        private void label2_Click(object sender, EventArgs e) { }
+        private void IPBox_TextChanged(object sender, EventArgs e) { }
     }
 }

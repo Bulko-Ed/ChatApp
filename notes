@@ -22,3 +22,4 @@ error katekatehello // done
 - server closes
 - client closes
 - someone joined/leaved the chat
+- closing before entering the second form
