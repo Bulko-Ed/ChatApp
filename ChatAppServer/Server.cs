@@ -57,7 +57,7 @@
                 var message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
                 if (message[..8] == "ToServer")
                 {
-                    ProcessMessageToServer(client, message[9..]);
+                    ProcessMessageToServer(client, message[8..]);
                 }
                 else if (message[..9] == "ToClients") //"ToClients" + client_name + "\n" + EnterMessageBox.Text;
                 {
