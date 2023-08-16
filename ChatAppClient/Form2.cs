@@ -31,14 +31,14 @@ namespace ChatAppClient
                 }
                 else
                 {
-                    
+
                     if (NameBox.Text == null)
                     {
                         MessageBox.Show("Your name must contain at least one character");
                     }
                     else
                     {
-                    MessageBox.Show("This name is taken, try again");
+                        MessageBox.Show("This name is taken, try again");
                     }
                     NameBox.Clear();
                 }
@@ -46,10 +46,11 @@ namespace ChatAppClient
         }
         private bool ValidateName(string name)
         {
-            
+
             if (name != null && name != "invalid name")
             {
-                if (!taken_names.Contains(name)) {
+                if (!taken_names.Contains(name))
+                {
                     return true;
                 }
             }

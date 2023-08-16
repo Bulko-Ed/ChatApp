@@ -17,7 +17,8 @@ error katekatehello // done
 - smooth closing and disconnecting
 - try breaking app in different ways
 - to allow run client and server from command line
-- add picture near the welcome label
-- sends " "
 - add client name etc
 - private, public etc
+- server closes
+- client closes
+- someone joined/leaved the chat

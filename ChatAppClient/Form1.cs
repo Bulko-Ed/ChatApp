@@ -17,21 +17,29 @@ namespace ChatAppClient
             stream = client.GetStream();
             Task task = ListenToServer();
             Program.Send(client, "ToServer", client_name, "NameInfo");
+            JoinLeftMessage("joined");
         }
 
 
         private void SendMessageButton_Click(object sender, EventArgs e)
         {
-            Program.Send(this.client, "ToClients", client_name, EnterMessageBox.Text);
-            EnterMessageBox.Clear();
+            
+            if (!string.IsNullOrEmpty(EnterMessageBox.Text))
+            {
+                Program.Send(this.client, "ToClients", client_name, EnterMessageBox.Text);
+                EnterMessageBox.Clear();
+            }
+                
         }
 
         private void Form1_Closing(object sender, FormClosingEventArgs e)
         {
-            //string message = "ToServer" + client_name + "\n" + "Closing";
-            //var buffer = Encoding.ASCII.GetBytes(message);
-            //stream.Write(buffer, 0, buffer.Length);
-            client.Close(); // TODO notify server
+            if (client.Connected)
+            {
+                Program.Send(client, "ToServer", client_name, "Closing");
+                JoinLeftMessage("left");
+                client.Close();
+            }
         }
 
         private async Task ListenToServer()
@@ -81,26 +89,39 @@ namespace ChatAppClient
                 }
             }
         }
-        private void ShowClientMessage(string sendername, string message)
+        private void ShowName(string name)
         {
-            //to show clientname in bold font and time the message was sent
             int start = rtb.TextLength;
             rtb.Invoke(() =>
             {
-                rtb.AppendText($"{sendername}");
-                rtb.Select(start, sendername.Length);
+                rtb.AppendText($"{name}");
+                rtb.Select(start, name.Length);
                 rtb.SelectionFont = new Font(rtb.Font, FontStyle.Bold);
                 rtb.Select(rtb.TextLength, 0); // to move insertion point to the end, because selectionfont starts with it
                 rtb.SelectionFont = new Font(rtb.Font, FontStyle.Regular);
 
             });
-
+        }
+        private void ShowTime()
+        {
             string t = DateTime.Now.ToString("HH:mm:ss");
+            rtb.Invoke(() => { rtb.AppendText($" at {t} \n"); });
+        }
+        private void JoinLeftMessage(string joinleft)
+        {
+            ShowName(client_name);
+            rtb.Invoke(() => { rtb.AppendText($" has {joinleft} a chat\n"); });
+            rtb.AppendText($"{new string('-', 70)} \n");
+        }
+        private void ShowClientMessage(string sendername, string message)
+        {
+            ShowName(sendername);
+            ShowTime();
+            
             rtb.Invoke(() =>
             {
-                rtb.AppendText($" at {t} \n");
-                rtb.AppendText($"{message} \n"); // TODO if string is bigger that window size, allow breaks in a message? 
-                rtb.AppendText($"{new string('-', 70)} \n"); // TODO set string to match window size
+                rtb.AppendText($"{message} \n"); 
+                rtb.AppendText($"{new string('-', 70)} \n"); 
             });
 
             // to display the most recent messages
@@ -116,6 +137,8 @@ namespace ChatAppClient
             {
                 MessageBox.Show("server is closing, you will be disconnected");
                 Close();
+                Application.Exit();
+                
             }
         }
 

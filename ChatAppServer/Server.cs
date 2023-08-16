@@ -16,7 +16,6 @@
             listener.Start();
             Task task = AcceptNewClients(listener);
             Console.WriteLine("Press q to close the server");
-            Program.client_names.Add("Kate");
 
             while (true)
             {
@@ -55,6 +54,7 @@
             {
                 var bytesRead = stream.Read(buffer, 0, buffer.Length);
                 var message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                if (message == "") { break; } // client has just disconnected
                 if (message[..8] == "ToServer")
                 {
                     ProcessMessageToServer(client, message[8..]);
@@ -106,15 +106,13 @@
                 {
                     message += c;
                 }
-            } /*
-            if (_message == "Closing")
+            } 
+            if (message == "Closing")
             {
                 clients.Remove(client);
                 client_names.Remove(name);
-                client.Dispose();
             }
-            */
-            if (_message == "NameInfo")
+            else if (message == "NameInfo")
             {
                 client_names.Add(name);
             }
