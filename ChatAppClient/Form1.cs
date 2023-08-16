@@ -16,18 +16,14 @@ namespace ChatAppClient
             this.client = client;
             stream = client.GetStream();
             Task task = ListenToServer();
-
-            //Task.Run(() => { ListenToServer(); });
+            Program.Send(client, "ToServer", client_name, "NameInfo");
         }
 
 
         private void SendMessageButton_Click(object sender, EventArgs e)
         {
-
-            string message = "ToClients" + client_name + "\n" + EnterMessageBox.Text;
+            Program.Send(this.client, "ToClients", client_name, EnterMessageBox.Text);
             EnterMessageBox.Clear();
-            var buffer = Encoding.ASCII.GetBytes(message);
-            stream.Write(buffer, 0, buffer.Length);
         }
 
         private void Form1_Closing(object sender, FormClosingEventArgs e)
@@ -37,17 +33,6 @@ namespace ChatAppClient
             //stream.Write(buffer, 0, buffer.Length);
             client.Close(); // TODO notify server
         }
-
-        /*
-        private void EnterMessageBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                SendMessageButton_Click(sender, e);
-            }
-        }
-        */
-
 
         private async Task ListenToServer()
         {
@@ -87,7 +72,7 @@ namespace ChatAppClient
                                 message += c;
                             }
                         }
-                        ProcessClientMessage(sendername, message);
+                        ShowClientMessage(sendername, message);
                     }
                 }
                 catch
@@ -96,7 +81,7 @@ namespace ChatAppClient
                 }
             }
         }
-        private void ProcessClientMessage(string sendername, string message)
+        private void ShowClientMessage(string sendername, string message)
         {
             //to show clientname in bold font and time the message was sent
             int start = rtb.TextLength;

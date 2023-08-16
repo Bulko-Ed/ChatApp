@@ -12,6 +12,7 @@ namespace ChatAppClient
         public TcpClient client;
         public IPAddress IP;
         public int port = -1;
+        public string taken_names = null;
         public CredentialsForm()
         {
             InitializeComponent();
@@ -30,14 +31,29 @@ namespace ChatAppClient
                 }
                 else
                 {
+                    
+                    if (NameBox.Text == null)
+                    {
+                        MessageBox.Show("Your name must contain at least one character");
+                    }
+                    else
+                    {
+                    MessageBox.Show("This name is taken, try again");
+                    }
                     NameBox.Clear();
-                    MessageBox.Show("Invalid name, try again");
                 }
             }
         }
         private bool ValidateName(string name)
         {
-            return (name != null && name != "invalid name");
+            
+            if (name != null && name != "invalid name")
+            {
+                if (!taken_names.Contains(name)) {
+                    return true;
+                }
+            }
+            return false;
         }
         private void IPBox_KeyDown(Object sender, KeyEventArgs e)
         {
@@ -98,8 +114,9 @@ namespace ChatAppClient
                 var bytesRead = stream.Read(_buffer, 0, _buffer.Length);
                 string message = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
 
-                if (message[..6] == "Server" && message[6..] == "ClientAccepted")
+                if (message[..6] == "Server" && message[6..20] == "ClientAccepted")
                 {
+                    taken_names = message[20..];
                     MessageBox.Show("connection successful");
                     IPBox.Clear();
                     PortBox.Clear();

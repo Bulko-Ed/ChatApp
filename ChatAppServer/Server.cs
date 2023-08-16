@@ -4,16 +4,20 @@
     using System.Net.Sockets;
     using System.Net; // for ip address.any
     using System.Text; // for encoding
+    using System.Collections.Generic;
     class Program
     {
         static List<TcpClient> clients = new List<TcpClient>();
-        static List<string> client_names = new List<string>();
+        public static List<string> client_names = new List<string>();
+        
         static void Main(string[] args)
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 5000);
             listener.Start();
             Task task = AcceptNewClients(listener);
             Console.WriteLine("Press q to close the server");
+            Program.client_names.Add("Kate");
+
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey();
@@ -31,7 +35,8 @@
                 TcpClient client = await listener.AcceptTcpClientAsync(); //will wait until there is an incoming connection request (why async task then?)
                 if (client.Connected == true)
                 {
-                    SendMessageAsServer(client, "ClientAccepted");
+                    string taken_names = string.Join('\n', client_names);
+                    SendMessageAsServer(client, "ClientAccepted" + taken_names);
                     Thread thread = new Thread(new ParameterizedThreadStart(ListenToClient));
                     thread.Start(client);
                     clients.Add(client);
@@ -109,6 +114,10 @@
                 client.Dispose();
             }
             */
+            if (_message == "NameInfo")
+            {
+                client_names.Add(name);
+            }
         }
 
 

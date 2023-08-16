@@ -1,7 +1,9 @@
 namespace ChatAppClient
 {
     using System;
+    using System.IO;
     using System.Net.Sockets;
+    using System.Text;
 
     internal static class Program
     {
@@ -26,6 +28,13 @@ namespace ChatAppClient
             {
                 return;
             }
+        }
+        public static void Send(TcpClient client, string towhom, string clientname, string message)
+        {
+            string m = towhom + clientname + "\n" + message;
+            var buffer = Encoding.ASCII.GetBytes(m);
+            client.GetStream().Write(buffer, 0, buffer.Length);
+
         }
     }
 }
