@@ -1,10 +1,11 @@
-﻿namespace ChatAppServer
+﻿using System;
+using System.Net.Sockets;
+using System.Net; // for ip address.any
+using System.Text; // for encoding
+using System.Collections.Generic;
+
+namespace ChatAppServer
 {
-    using System;
-    using System.Net.Sockets;
-    using System.Net; // for ip address.any
-    using System.Text; // for encoding
-    using System.Collections.Generic;
     class Program
     {
         static List<TcpClient> clients = new List<TcpClient>();
@@ -12,11 +13,12 @@
         
         static void Main(string[] args)
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, 5000);
+            int port = 5000;
+            TcpListener listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
-            Task task = AcceptNewClients(listener);
-            Console.WriteLine("Press q to close the server");
-            Console.WriteLine($"{new string('-', 70)} \n");
+            _ = AcceptNewClients(listener);
+            Console.WriteLine("Press q to close the server.");
+            Console.WriteLine($"{new string('-', 50)}");
 
             while (true)
             {
@@ -28,7 +30,7 @@
             }
             NotifyAndClose();
         }
-        private static async Task AcceptNewClients(TcpListener listener)
+        static async Task AcceptNewClients(TcpListener listener)
         {
             while (true)
             {
@@ -49,7 +51,7 @@
             TcpClient client = (TcpClient)_client;
             NetworkStream stream = client.GetStream();
 
-            var buffer = new byte[1024];
+            var buffer = new byte[3072];
 
             while (true)
             {   
@@ -74,8 +76,6 @@
                     clients.Remove(client);
                     break;
                 }
-                
-
             }
         }
 
@@ -145,7 +145,6 @@
             foreach (var client in clients)
             {
                 SendAsServer(client, "ShuttingDown");
-                //todo : close the progra,
             }
             Environment.Exit(0);
         }

@@ -1,6 +1,6 @@
 ﻿namespace ChatAppClient
 {
-    partial class MessagesForm
+    partial class ChatForm
     {
         /// <summary>
         ///  Required designer variable.

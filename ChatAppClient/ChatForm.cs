@@ -3,44 +3,54 @@ using System.Text;
 
 namespace ChatAppClient
 {
-    public partial class MessagesForm : Form
+    public partial class ChatForm : Form
     {
-        public TcpClient client;
-        public NetworkStream stream;
-        string client_name;
+        private TcpClient client;
+        private NetworkStream stream;
+        private string client_name;
 
-        public MessagesForm(string client_name, TcpClient client)
+        public ChatForm(string client_name, TcpClient client)
         {
             InitializeComponent();
             this.client_name = client_name;
             this.client = client;
-            stream = client.GetStream();
-            Task task = ListenToServer();
-            Program.Send(client, "ToServer", client_name, "Join");
+            this.stream = client.GetStream();
+            _ = ListenToServer();
+            Send("ToServer", client_name, "Join");
         }
-
-
         private void SendMessageButton_Click(object sender, EventArgs e)
-        {
-            
+        { 
             if (!string.IsNullOrEmpty(EnterMessageBox.Text))
             {
-                Program.Send(this.client, "ToClients", client_name, EnterMessageBox.Text);
+                Send("ToClients", client_name, EnterMessageBox.Text);
                 EnterMessageBox.Clear();
-            }
-                
+            }     
         }
 
         private void Form1_Closing(object sender, FormClosingEventArgs e)
         {
             if (client.Connected)
             {
-                Program.Send(client, "ToServer", client_name, "Closing");
+                Send("ToServer", client_name, "Closing");
                 client.Close();
                 
             }
             Application.Exit();
             Environment.Exit(0);
+        }
+        public void Send(string where, string clientname, string message)
+        {
+            string m = where + clientname + "\n" + message; // m = ToServerClientname\nMessage
+            var buffer = Encoding.ASCII.GetBytes(m);
+            try
+            {
+            stream.Write(buffer, 0, buffer.Length);
+            }
+            catch (IOException)
+            {
+                client.Close();
+                Form1_Closing(null, null);
+            }
         }
 
         private async Task ListenToServer()
@@ -49,46 +59,48 @@ namespace ChatAppClient
             {
                 try
                 {
-                    string sendername = null;
-                    string message = null;
-                    bool senderNamePart = true;
-
-                    var _buffer = new byte[1024];
+                    var _buffer = new byte[3024];
                     var bytesRead = await stream.ReadAsync(_buffer, 0, _buffer.Length);
+                    if (bytesRead == 0) { client.Close(); Close(); }
                     var data = Encoding.ASCII.GetString(_buffer, 0, bytesRead);
                     // data = Server\nServerMessage or Client\nClientName\nClientMessage
-
                     if (data[..6] == "Server")
                     {
                         ProcessServerMessage(data[6..]);
-                        continue;
                     }
                     else if (data[..6] == "Client")
                     {
-
-                        foreach (char c in data[7..])
-                        {
-                            if (c == '\n' && senderNamePart)
-                            {
-                                senderNamePart = false;
-                            }
-                            else if (senderNamePart)
-                            {
-                                sendername += c;
-                            }
-                            else
-                            {
-                                message += c;
-                            }
-                        }
-                        ShowClientMessage(sendername, message);
+                        ProcessClientMessage(data[7..]);
                     }
                 }
-                catch
+                catch //  user close server without pressing q
                 {
                     client.Close();
+                    Close();
                 }
             }
+        }
+        private void ProcessClientMessage(string data)
+        {
+            string sendername = null;
+            string message = null;
+            bool senderNamePart = true;
+            foreach (char c in data)
+            {
+                if (c == '\n' && senderNamePart)
+                {
+                    senderNamePart = false;
+                }
+                else if (senderNamePart)
+                {
+                    sendername += c;
+                }
+                else
+                {
+                    message += c;
+                }
+            }
+            ShowClientMessage(sendername, message);
         }
         private void ShowName(string name)
         {
@@ -139,7 +151,6 @@ namespace ChatAppClient
                 MessageBox.Show("server is closing, you will be disconnected");
                 client.Close();
                 Close();
-                
             }
             else if (message[..4] == "Join")
             {
@@ -150,30 +161,10 @@ namespace ChatAppClient
                 JoinLeftMessage("left", message[4..]);
             }
         }
-
-        private void EnterMessageBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void NameBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MessagesForm_Resize(object sender, EventArgs e)
-        {
-
-        }
+        private void EnterMessageBox_TextChanged(object sender, EventArgs e) { }
+        private void NameBox_TextChanged(object sender, EventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void richTextBox1_TextChanged(object sender, EventArgs e) { }
+        private void MessagesForm_Resize(object sender, EventArgs e) { }
     }
 }

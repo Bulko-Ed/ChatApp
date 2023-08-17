@@ -1,8 +1,6 @@
-﻿using System.IO;
-using System.Net; // for IP address
+﻿using System.Net; // for IP address
 using System.Net.Sockets; // for TcpClient
 using System.Text; // for Encoding
-
 
 namespace ChatAppClient
 {
@@ -75,7 +73,6 @@ namespace ChatAppClient
                 return false;
             }
         }
-
         private bool ValidPort()
         {
             string _port = PortBox.Text;
@@ -147,7 +144,7 @@ namespace ChatAppClient
             float font_size_2 = Height / 50;
             float font_size_3 = Height / 60;
 
-            WelcomeLabel.Font = new Font(WelcomeLabel.Font.FontFamily, font_size_1);
+            WelcomeLabel.Font = new Font(Font.FontFamily, font_size_1);
             enterIPlabel.Font = new Font(Font.FontFamily, font_size_2);
             PortNumberLabel.Font = new Font(Font.FontFamily, font_size_3);
             IPlabel.Font = new Font(Font.FontFamily, font_size_3);
@@ -157,7 +154,6 @@ namespace ChatAppClient
         {
             NameBox.Text = string.Empty;
         }
-
         private void label1_Click_1(object sender, EventArgs e) { }
         private void PortBox_TextChanged(object sender, EventArgs e) { }
         private void NameBox_TextChanged(object sender, EventArgs e) { }
